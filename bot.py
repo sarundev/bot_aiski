@@ -3,7 +3,7 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Replace with your actual bot token from BotFather
-BOT_TOKEN = os.environ.get('BOT_TOKEN', '8913338474:AAGO2kisVGkzWqJC2iplopo95eoryI289eY')
+BOT_TOKEN = os.environ.get('BOT_TOKEN', '8913338474:AAHqrhqc0XIN5GS8NZ2YiamygMO6W9ZE2io')
 bot = telebot.TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=['start'])
