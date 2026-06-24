@@ -9,7 +9,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 # Your marketing copy
 WELCOME_TEXT = (
-    "<b>Templates: 🚛 Car Transport Orders Across Europe</b>\n\n"
+    "Templates: 🚛 Car Transport Orders Across Europe\n\n"
     "📍 Daily transport requests\n\n"
     "https://www.transportinghighway.com/"
 )
