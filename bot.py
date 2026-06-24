@@ -1,7 +1,7 @@
 import os
 import logging
 import asyncio
-from telegram import Update
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 # Enable logging
@@ -9,15 +9,14 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 # Your marketing copy
 WELCOME_TEXT = (
-    "🚗 *Car transport companies across Europe — this is for you.*\n\n"
-    "Transporting Highway gives you direct access to vehicle transport orders throughout Europe.\n\n"
-    "✅ *More loads, less empty runs*\n"
-    "✅ *Direct orders — no middlemen*\n"
-    "✅ *Fast & reliable payments*\n"
-    "✅ *Simple platform, easy to use*\n\n"
-    "Join hundreds of transport companies already moving cars with us.\n\n"
-    "📩 *Here is your file! Register now and start receiving orders:*"
+    "<b>Templates: 🚛 Car Transport Orders Across Europe</b>\n\n"
+    "📍 Daily transport requests\n\n"
+    "https://www.transportinghighway.com/"
 )
+
+btn_website = InlineKeyboardButton("✨ Visit Channel", url="https://t.me/TRANSPORTINGT")
+btn_services = InlineKeyboardButton("📊 View Orders", url="https://t.me/TRANSPORTINGT")
+markup = InlineKeyboardMarkup([[btn_website, btn_services]])
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -26,7 +25,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=chat_id, 
         text=WELCOME_TEXT, 
-        parse_mode="Markdown"
+        parse_mode="Markdown",
+        reply_markup=markup
     )
     
     # 2. Automatically send the document/file
