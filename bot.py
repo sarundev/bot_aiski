@@ -3,22 +3,22 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Replace with your actual bot token from BotFather
-BOT_TOKEN = os.environ.get('BOT_TOKEN', '8894742602:AAHxlsyD5z9N0yfGnAUk7FqwF74XKK-0BbA')
+BOT_TOKEN = os.environ.get('BOT_TOKEN', '8913338474:AAGO2kisVGkzWqJC2iplopo95eoryI289eY')
 bot = telebot.TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     # Text imitating the format of the image provided, using aisakikh.com details
     text = (
-        "<b>Templates: 🚀 Aisaki Digital Services</b>\n\n"
-        "📍 Facebook Ads, TikTok growth, and online business promotion\n\n"
-        "https://www.aisakikh.com"
+        "<b>Templates: 🚛 Car Transport Orders Across Europe</b>\n\n"
+        "📍 Daily transport requests\n\n"
+        "https://www.transportinghighway.com/"
     )
     
     # Creating inline keyboard buttons similar to the image
     markup = InlineKeyboardMarkup(row_width=2)
-    btn_website = InlineKeyboardButton("✨ Visit Website", url="https://www.aisakikh.com")
-    btn_services = InlineKeyboardButton("📊 View Orders", url="https://www.aisakikh.com/Service")
+    btn_website = InlineKeyboardButton("✨ Visit Channel", url="https://t.me/TRANSPORTINGT")
+    btn_services = InlineKeyboardButton("📊 View Orders", url="https://t.me/TRANSPORTINGT")
     markup.add(btn_website, btn_services)
     
     # Send the message with HTML formatting and the inline keyboard
@@ -30,5 +30,5 @@ def send_welcome(message):
     )
 
 if __name__ == '__main__':
-    print("Aisaki Digital Telegram bot is starting...")
+    print("transport Telegram bot is starting...")
     bot.infinity_polling()
