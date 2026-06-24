@@ -1,34 +1,72 @@
 import os
-import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+import logging
+import asyncio
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-# Replace with your actual bot token from BotFather
-BOT_TOKEN = os.environ.get('BOT_TOKEN', '8913338474:AAHqrhqc0XIN5GS8NZ2YiamygMO6W9ZE2io')
-bot = telebot.TeleBot(BOT_TOKEN)
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    # Text imitating the format of the image provided, using aisakikh.com details
-    text = (
-        "<b>Templates: 🚛 Car Transport Orders Across Europe</b>\n\n"
-        "📍 Daily transport requests\n\n"
-        "https://www.transportinghighway.com/"
+# Your marketing copy
+WELCOME_TEXT = (
+    "🚗 *Car transport companies across Europe — this is for you.*\n\n"
+    "Transporting Highway gives you direct access to vehicle transport orders throughout Europe.\n\n"
+    "✅ *More loads, less empty runs*\n"
+    "✅ *Direct orders — no middlemen*\n"
+    "✅ *Fast & reliable payments*\n"
+    "✅ *Simple platform, easy to use*\n\n"
+    "Join hundreds of transport companies already moving cars with us.\n\n"
+    "📩 *Here is your file! Register now and start receiving orders:*"
+)
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    
+    # 1. Send the promotional message
+    await context.bot.send_message(
+        chat_id=chat_id, 
+        text=WELCOME_TEXT, 
+        parse_mode="Markdown"
     )
     
-    # Creating inline keyboard buttons similar to the image
-    markup = InlineKeyboardMarkup(row_width=2)
-    btn_website = InlineKeyboardButton("✨ Visit Channel", url="https://t.me/TRANSPORTINGT")
-    btn_services = InlineKeyboardButton("📊 View Orders", url="https://t.me/TRANSPORTINGT")
-    markup.add(btn_website, btn_services)
+    # 2. Automatically send the document/file
+    # Ensure your file (e.g., registration_guide.pdf) is in the same folder as this script
+    file_path = "registration_guide.pdf" 
     
-    # Send the message with HTML formatting and the inline keyboard
-    bot.send_message(
-        message.chat.id, 
-        text, 
-        parse_mode="HTML", 
-        reply_markup=markup
-    )
+    if os.path.exists(file_path):
+        with open(file_path, "rb") as file:
+            await context.bot.send_document(
+                chat_id=chat_id, 
+                document=file, 
+                caption="📄 Transporting Highway - Registration Guide & Info"
+            )
+    else:
+        logging.error(f"File {file_path} not found.")
 
-if __name__ == '__main__':
-    print("transport Telegram bot is starting...")
-    bot.infinity_polling()
+async def main():
+    # Token retrieved safely from Render environment variables
+    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+    
+    if not TOKEN:
+        print("Error: No TELEGRAM_BOT_TOKEN found in environment variables.")
+        return
+
+    # Build the application
+    application = Application.builder().token(TOKEN).build()
+    application.add_handler(CommandHandler("start", start))
+    
+    print("Bot is initializing and running...")
+    
+    # Using the native asynchronous manager blocks to handle initialization, polling, and finalization safely on Python 3.14+
+    async with application:
+        await application.initialize()
+        await application.start()
+        await application.updater.start_polling()
+        
+        # Keeps the bot running indefinitely
+        while True:
+            await asyncio.sleep(3600)
+
+if __name__ == "__main__":
+    # Explicitly creating and running the async loop solves the Python 3.14 background thread error
+    asyncio.run(main())
